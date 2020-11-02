@@ -1,23 +1,15 @@
-const todos = [{
-    text: 'WebdevBootcamp',
-    completed: false
-}, {
-    text: 'Business Name',
-    completed: true
-}, {
-    text: 'Register with State',
-    completed: false
-}, {
-    text: 'Upenn Classes',
-    completed: false
-}, {
-    text: 'Workout',
-    completed: true
-}]
+let todos = []
 
 const filters = {
     searchText: '',
     hideCompleted: false
+}
+
+// check for existing saved data
+const todosJSON = localStorage.getItem('todos')
+
+if (todosJSON !== null) {
+    todos = JSON.parse(todosJSON)
 }
 
 // render todos function START
@@ -38,9 +30,7 @@ const renderTodos = function (todos, filters) {
     document.querySelector('#todos').innerHTML = '' 
         
     const summary = document.createElement('h2')
-    
      summary.textContent = `You have ${incompleteTodos.length} todos left`
-     
      document.querySelector('#todos').appendChild(summary)
      // print a p for each todo above. use text value of object for text of paragraph
      
@@ -48,11 +38,9 @@ const renderTodos = function (todos, filters) {
      filteredTodos.forEach(function (todo) {
          // create an element foreach todo
          const p = document.createElement('p')
-         // set the text content for p
-         p.textContent = todo.text
+        p.textContent = todo.text
          // print element to screen
          document.querySelector('#todos').appendChild(p)
-         console.log(p.textContent)
      })
 } 
 
@@ -69,6 +57,7 @@ document.querySelector('#new-todo').addEventListener('submit', function(e){
         text: e.target.elements.text.value,
         completed: false
     })
+    localStorage.setItem('todos', JSON.stringify(todos))
     renderTodos(todos, filters)
     e.target.elements.text.value = ''
 })
